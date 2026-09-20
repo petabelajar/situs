@@ -1,11 +1,11 @@
 :root {
     color-scheme: light;
-    --dasar:#F6FAFD; --kartu:#FFFFFF; --tinta:#0F1B2D; --tinta-2:#3A4A60;
+    --dasar:#F4F7FB; --kartu:#FFFFFF; --tinta:#0B1D37; --tinta-2:#3A4A60;
     --redup:#6B7C93; --garis:#E3EBF3; --garis-2:#C9D7E6;
-    --biru:#1E5BD8; --biru-tua:#12357F; --biru-muda:#EAF1FE; --biru-kabut:#F3F7FE;
-    --emas:#C98410; --emas-muda:#FDF4E0;
+    --biru:#1E4FA8; --biru-tua:#0B1D37; --biru-muda:#E8EEF8; --biru-kabut:#F4F7FB;
+    --emas:#8A5A08; --emas-muda:#FFF6E0; --emas-cerah:#E3A21A; --navy:#0B1D37;
     --r:16px; --r-besar:22px;
-    --naik:0 1px 2px rgba(15,27,45,.04), 0 12px 32px -20px rgba(18,53,127,.28);
+    --naik:0 1px 2px rgba(15,27,45,.04), 0 12px 32px -20px rgba(11,29,55,.26);
   }
   * { box-sizing:border-box; }
   html, body { height:100%; }
@@ -47,21 +47,23 @@
     border-bottom:1px solid var(--garis); padding:14px 22px;
   }
   .atas .dalam { max-width:900px; margin:0 auto; display:flex; align-items:center; gap:11px; }
-  .atas svg { width:34px; height:34px; flex:none; border-radius:9px; }
+  .atas .logo-pb { height:42px; width:auto; flex:none; display:block; }
+  .atas .sub-merek { font-size:11.5px; line-height:1.35; color:var(--redup); font-weight:600; padding-left:12px; border-left:1px solid var(--garis-2); }
+  @media (max-width:430px){ .atas .logo-pb { height:38px; } }
   .atas b { font-size:15.5px; font-weight:700; letter-spacing:-.01em; line-height:1.2; display:block; }
   .atas i { font-size:11.5px; color:var(--redup); font-style:normal; display:block; }
 
   .hero { padding-top:52px; text-align:center; }
   .kop {
     display:inline-flex; align-items:center; gap:8px; font-size:11.5px; font-weight:700;
-    letter-spacing:.1em; text-transform:uppercase; color:var(--biru);
-    background:var(--biru-muda); padding:6px 13px; border-radius:999px;
+    letter-spacing:.1em; text-transform:uppercase; color:var(--emas);
+    background:var(--emas-muda); padding:6px 13px; border-radius:999px;
   }
   .hero h1 {
-    font-family:Newsreader, Georgia, serif; font-weight:500;
-    font-size:clamp(32px, 6vw, 50px); line-height:1.1; letter-spacing:-.022em; margin-top:20px;
+    font-family:"Plus Jakarta Sans", system-ui, sans-serif; font-weight:800;
+    font-size:clamp(30px, 5.6vw, 46px); line-height:1.12; letter-spacing:-.025em; margin-top:20px;
   }
-  .hero h1 em { font-style:italic; color:var(--biru); }
+  .hero h1 em { font-style:normal; background:linear-gradient(transparent 62%, rgba(242,182,50,.55) 62%); padding:0 2px; }
   .hero .lead { margin:20px auto 0; font-size:17px; color:var(--tinta-2); max-width:56ch; }
   @media (max-width:560px){ .hero { padding-top:32px; } .hero .lead { font-size:15.5px; } }
 
@@ -82,16 +84,16 @@
     background:var(--kartu); border:1px solid var(--garis); border-radius:var(--r);
     padding:22px; transition:border-color .15s, box-shadow .15s, transform .15s;
   }
-  a.produk:hover { border-color:var(--biru); box-shadow:var(--naik); transform:translateY(-2px); }
+  a.produk:hover { border-color:var(--navy); box-shadow:var(--naik); transform:translateY(-2px); }
   .produk .tanda {
     align-self:flex-start; font-size:10.5px; font-weight:700; letter-spacing:.06em;
     text-transform:uppercase; padding:4px 9px; border-radius:6px;
   }
-  .tanda-aktif { background:var(--biru-muda); color:var(--biru); }
+  .tanda-aktif { background:var(--emas-cerah); color:var(--navy); }
   .tanda-segera { background:var(--emas-muda); color:var(--emas); }
   .produk h3 { font-size:17px; font-weight:700; letter-spacing:-.015em; }
   .produk p { font-size:13.5px; color:var(--redup); }
-  .produk .tuju { font-size:13px; font-weight:600; color:var(--biru); margin-top:4px; }
+  .produk .tuju { font-size:13.5px; font-weight:800; color:var(--navy); margin-top:4px; }
   .produk.mati { opacity:.72; }
 
   .tiga-poin { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; }

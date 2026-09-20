@@ -87,7 +87,13 @@
     wadah.style.display = "block";
 
     var bg = document.createElement("iframe");
-    bg.src = prod.exec;
+    // teruskan ?voucher=… (dari WhatsApp) dan ?contoh=… ke aplikasi tes
+    var q = new URLSearchParams(location.search), terus = [];
+    ["voucher", "contoh"].forEach(function (k) {
+      var v = q.get(k);
+      if (v && /^[A-Za-z0-9-]{1,20}$/.test(v)) terus.push(k + "=" + encodeURIComponent(v));
+    });
+    bg.src = prod.exec + (terus.length ? "?" + terus.join("&") : "");
     bg.title = prod.nama;
     bg.setAttribute("allow", "clipboard-write");
     bg.onload = function () { memuat.classList.add("pergi"); };
@@ -175,12 +181,12 @@
       }
       var titik = document.createElementNS(ns, "circle");
       titik.setAttribute("cx", q.x); titik.setAttribute("cy", q.y); titik.setAttribute("r", "6.5");
-      titik.setAttribute("fill", idx === 1 ? "#F5C451" : "#1E5BD8");
+      titik.setAttribute("fill", idx === 1 ? "#E3A21A" : "#1E4FA8");
       frag.appendChild(titik);
       var cincin = document.createElementNS(ns, "circle");
       cincin.setAttribute("cx", q.x); cincin.setAttribute("cy", q.y); cincin.setAttribute("r", "11");
       cincin.setAttribute("fill", "none");
-      cincin.setAttribute("stroke", idx === 1 ? "#F5C451" : "#1E5BD8");
+      cincin.setAttribute("stroke", idx === 1 ? "#E3A21A" : "#1E4FA8");
       cincin.setAttribute("stroke-width", "1.4"); cincin.setAttribute("opacity", ".45");
       frag.appendChild(cincin);
     });
@@ -191,7 +197,7 @@
       d += "C" + (a.x + 68) + " " + (a.y - 28) + "," + (b.x - 68) + " " + (b.y + 28) + "," + b.x + " " + b.y;
     }
     jalur.setAttribute("d", d); jalur.setAttribute("fill", "none");
-    jalur.setAttribute("stroke", "#1E5BD8"); jalur.setAttribute("stroke-width", "1.6");
+    jalur.setAttribute("stroke", "#1E4FA8"); jalur.setAttribute("stroke-width", "1.6");
     jalur.setAttribute("stroke-dasharray", "5 6"); jalur.setAttribute("opacity", ".4");
     frag.appendChild(jalur);
     svg.appendChild(frag);
