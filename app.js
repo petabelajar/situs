@@ -87,9 +87,9 @@
     wadah.style.display = "block";
 
     var bg = document.createElement("iframe");
-    // teruskan ?voucher=… (dari WhatsApp) dan ?contoh=… ke aplikasi tes
+    // teruskan ?voucher=… (dari WhatsApp), ?akses=… (link hasil) dan ?contoh=… ke aplikasi tes
     var q = new URLSearchParams(location.search), terus = [];
-    ["voucher", "contoh"].forEach(function (k) {
+    ["voucher", "contoh", "akses"].forEach(function (k) {
       var v = q.get(k);
       if (v && /^[A-Za-z0-9-]{1,20}$/.test(v)) terus.push(k + "=" + encodeURIComponent(v));
     });
