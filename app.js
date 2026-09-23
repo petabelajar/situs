@@ -70,11 +70,58 @@
   var p = PRODUK[kunci];
 
   if (p && p.status === "aktif" && p.exec) {
+    pasangPixel();
     tampilkanProduk(p);
   } else if (p) {
     tampilkanBeranda("Tes " + p.nama + " belum dibuka. Silakan pilih tes lain di bawah.");
   } else {
     tampilkanBeranda("");
+  }
+
+  // ─── Meta Pixel + pencatatan sumber ───
+  var PIXEL_ID = "1297774849032335";
+
+  function pasangPixel() {
+    /* eslint-disable */
+    !function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;
+    n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,
+    document,'script','https://connect.facebook.net/en_US/fbevents.js');
+    /* eslint-enable */
+    fbq("init", PIXEL_ID);
+    fbq("track", "PageView");
+    fbq("track", "ViewContent", { content_name: "Tes Diagnostik " + (p ? p.nama : "") });
+
+    // Aplikasi tes (Apps Script) mengabari lewat postMessage saat tes dimulai / selesai.
+    var sudah = {};
+    window.addEventListener("message", function (ev) {
+      if (!/\.googleusercontent\.com$|script\.google\.com$/.test(String(ev.origin).replace(/^https:\/\//, ""))) return;
+      var d = ev.data || {};
+      if (d.pb === "mulai" && !sudah.mulai) {
+        sudah.mulai = 1;
+        fbq("trackCustom", "MulaiTes", { produk: kunci });
+      } else if (d.pb === "selesai" && !sudah.selesai) {
+        sudah.selesai = 1;
+        fbq("track", "CompleteRegistration", { content_name: "Tes selesai " + kunci, status: true });
+        fbq("trackCustom", "TesSelesai", { produk: kunci });
+      }
+    });
+  }
+
+  /* Ringkas asal kunjungan jadi satu teks pendek, mis. "meta|120260551860140537|Ikla 2".
+     Urutan: ?src= langsung (mis. dari link WA), lalu UTM dari iklan, lalu yang tersimpan. */
+  function sumberKunjungan(q) {
+    var s = q.get("src") || "";
+    if (!s && (q.get("utm_source") || q.get("utm_campaign"))) {
+      s = [q.get("utm_source") || "", q.get("utm_campaign") || "", q.get("utm_content") || ""].join("|");
+    }
+    s = s.replace(/[^A-Za-z0-9|_.\- ]/g, "").substring(0, 120);
+    try {
+      if (s) sessionStorage.setItem("pb_src", s);
+      else s = sessionStorage.getItem("pb_src") || "";
+    } catch (e) {}
+    return s;
   }
 
   // ─── mode produk: bingkai penuh layar ───
@@ -93,6 +140,9 @@
       var v = q.get(k);
       if (v && /^[A-Za-z0-9-]{1,20}$/.test(v)) terus.push(k + "=" + encodeURIComponent(v));
     });
+    // sumber kunjungan (iklan / WA) ikut dicatat di spreadsheet
+    var src = sumberKunjungan(q);
+    if (src) terus.push("src=" + encodeURIComponent(src));
     bg.src = prod.exec + (terus.length ? "?" + terus.join("&") : "");
     bg.title = prod.nama;
     bg.setAttribute("allow", "clipboard-write");
